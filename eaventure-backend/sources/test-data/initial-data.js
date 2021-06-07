@@ -18,7 +18,7 @@ module.exports = async keystone => {
 
   if (count === 0) {
     const password = randomString();
-    const email = 'admin@example.com';
+    const email = 'admin@admin.com';
 
     const { errors } = await keystone.executeGraphQL({
       context: keystone.createContext().sudo(),

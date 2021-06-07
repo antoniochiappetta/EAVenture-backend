@@ -1,74 +1,23 @@
 const { Keystone } = require('@keystonejs/keystone');
-const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
-const { Text, Checkbox, Password } = require('@keystonejs/fields');
 const { GraphQLApp } = require('@keystonejs/app-graphql');
 const { AdminUIApp } = require('@keystonejs/app-admin-ui');
-const initialiseData = require('./source/test-data/initial-data');
+const initialiseData = require('./sources/test-data/initial-data');
 
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 const PROJECT_NAME = 'eaventure-backend';
 const adapterConfig = { mongoUri: 'mongodb://localhost/eaventure-db' };
 
+const UserSchema = require('./sources/schemas/User');
+const BackOfficeAuthStrategy = require('./sources/authentication/BackOfficeAuthStrategy');
 
 const keystone = new Keystone({
   adapter: new Adapter(adapterConfig),
   onConnect: process.env.CREATE_TABLES !== 'true' && initialiseData,
 });
 
-// Access control functions
-const userIsAdmin = ({ authentication: { item: user } }) => Boolean(user && user.isAdmin);
-const userOwnsItem = ({ authentication: { item: user } }) => {
-  if (!user) {
-    return false;
-  }
+keystone.createList('User', UserSchema);
 
-  // Instead of a boolean, you can return a GraphQL query:
-  // https://www.keystonejs.com/api/access-control#graphqlwhere
-  return { id: user.id };
-};
-
-const userIsAdminOrOwner = auth => {
-  const isAdmin = access.userIsAdmin(auth);
-  const isOwner = access.userOwnsItem(auth);
-  return isAdmin ? isAdmin : isOwner;
-};
-
-const access = { userIsAdmin, userOwnsItem, userIsAdminOrOwner };
-
-keystone.createList('User', {
-  fields: {
-    name: { type: Text },
-    email: {
-      type: Text,
-      isUnique: true,
-    },
-    isAdmin: {
-      type: Checkbox,
-      // Field-level access controls
-      // Here, we set more restrictive field access so a non-admin cannot make themselves admin.
-      access: {
-        update: access.userIsAdmin,
-      },
-    },
-    password: {
-      type: Password,
-    },
-  },
-  // List-level access controls
-  access: {
-    read: access.userIsAdminOrOwner,
-    update: access.userIsAdminOrOwner,
-    create: access.userIsAdmin,
-    delete: access.userIsAdmin,
-    auth: true,
-  },
-});
-
-const authStrategy = keystone.createAuthStrategy({
-  type: PasswordAuthStrategy,
-  list: 'User',
-  config: { protectIdentities: process.env.NODE_ENV === 'production' },
-});
+const authStrategy = keystone.createAuthStrategy(BackOfficeAuthStrategy);
 
 module.exports = {
   keystone,
