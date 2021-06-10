@@ -1,0 +1,1 @@
+mongodump -h localhost:27017 -d eaventure-db-dev -o ../resources/db-dumps
