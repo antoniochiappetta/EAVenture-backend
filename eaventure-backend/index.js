@@ -12,6 +12,8 @@ const dbUri = process.env.NODE_ENV === 'production' ? prodDbUri : devDbUri;
 const adapterConfig = { mongoUri: dbUri };
 
 const UserSchema = require('./sources/schemas/User');
+const TrainStop = require('./sources/schemas/TrainStop');
+const InterestItem = require('./sources/schemas/InterestItem');
 const BackOfficeAuthStrategy = require('./sources/authentication/BackOfficeAuthStrategy');
 
 const keystone = new Keystone({
@@ -20,6 +22,8 @@ const keystone = new Keystone({
 });
 
 keystone.createList('User', UserSchema);
+keystone.createList('TrainStop', TrainStop);
+keystone.createList('InterestItem', InterestItem);
 
 const authStrategy = keystone.createAuthStrategy(BackOfficeAuthStrategy);
 
