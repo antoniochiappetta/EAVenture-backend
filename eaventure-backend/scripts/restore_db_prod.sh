@@ -1,1 +1,1 @@
-mongorestore -h localhost:27017 -d eaventure-db-prod  --drop ../resources/db-dumps/eaventure-db-prod
+mongorestore -h localhost:27017 -d eaventure-db-prod ../resources/db-dumps/eaventure-db-prod
