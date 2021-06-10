@@ -5,7 +5,11 @@ const initialiseData = require('./sources/test-data/initial-data');
 
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 const PROJECT_NAME = 'eaventure-backend';
-const adapterConfig = { mongoUri: 'mongodb://localhost/eaventure-db' };
+
+const prodDbUri = 'mongodb://localhost/eaventure-db-prod';
+const devDbUri = 'mongodb://localhost/eaventure-db-dev';
+const dbUri = process.env.NODE_ENV === 'production' ? prodDbUri : devDbUri;
+const adapterConfig = { mongoUri: dbUri };
 
 const UserSchema = require('./sources/schemas/User');
 const BackOfficeAuthStrategy = require('./sources/authentication/BackOfficeAuthStrategy');
