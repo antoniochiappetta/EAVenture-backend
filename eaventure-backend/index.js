@@ -17,6 +17,7 @@ const InterestItem = require('./sources/schemas/InterestItem');
 const InterestItemImage = require('./sources/schemas/InterestItemImage');
 const SocialContent = require('./sources/schemas/SocialContent');
 const BackOfficeAuthStrategy = require('./sources/authentication/BackOfficeAuthStrategy');
+const ApiRouter = require('./sources/features/api/router');
 
 const keystone = new Keystone({
   adapter: new Adapter(adapterConfig),
@@ -28,7 +29,6 @@ keystone.createList('TrainStop', TrainStop);
 keystone.createList('InterestItem', InterestItem);
 keystone.createList('InterestItemImage', InterestItemImage);
 keystone.createList('SocialContent', SocialContent);
-
 
 const authStrategy = keystone.createAuthStrategy(BackOfficeAuthStrategy);
 
@@ -42,4 +42,7 @@ module.exports = {
       authStrategy,
     }),
   ],
+  configureExpress: app => {
+    app.use('/api', ApiRouter);
+  }
 };
