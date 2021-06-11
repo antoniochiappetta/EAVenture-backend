@@ -34,7 +34,9 @@ module.exports = {
       isRequired: false	    
     },
     images: {
-      type: Url,
+      type: Relationship,
+      ref: 'InterestItemImage',
+      many: true,
       isRequired: false	   
     },	 
   },
