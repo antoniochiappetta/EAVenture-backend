@@ -4,11 +4,11 @@ module.exports = {
   fields: {
     name: {
       type: Text,
-      isRequired: true,
+      isRequired: true
     },
     description: {
       type: Text,
-      isRequired: true,
+      isRequired: true
     },
     stop: {
       type: Relationship,
