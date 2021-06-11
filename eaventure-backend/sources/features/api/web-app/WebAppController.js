@@ -2,8 +2,8 @@ const { Keystone } = require('@keystonejs/keystone');
 const { WebApp } = require('../web-app/WebAppService');
 const { utils } = require('../../../utils/writer');
 
-module.exports.searchInventory = function searchInventory (req, res, next, trainId) {
-  WebApp.searchInventory(trainId)
+module.exports.searchInventory = function(req, res) {
+  WebApp.searchInventory(req.params.trainId)
     .then(function (response) {
       utils.writeJson(res, response);
     })
