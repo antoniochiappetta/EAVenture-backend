@@ -1,8 +1,7 @@
-const { Keystone } = require('@keystonejs/keystone');
-const { BackOffice } = require('../back-office/BackOfficeService');
-const { utils } = require('../../../utils/writer');
+const BackOffice = require('../back-office/BackOfficeService');
+const utils = require('../../../utils/writer');
 
-module.exports.addInterestItem = function(req, res) {
+exports.addInterestItem = function addInterestItem (req, res) {
   BackOffice.addInterestItem(req.body)
     .then(function (response) {
       utils.writeJson(res, response);
@@ -12,7 +11,7 @@ module.exports.addInterestItem = function(req, res) {
     });
 };
   
-module.exports.addSocialContent = function(req, res) {
+exports.addSocialContent = function addSocialContent (req, res) {
   BackOffice.addSocialContent(req.body)
     .then(function (response) {
       utils.writeJson(res, response);
@@ -22,7 +21,7 @@ module.exports.addSocialContent = function(req, res) {
     });
 };
   
-module.exports.addTrainStop = function(req, res) {
+exports.addTrainStop = function addTrainStop (req, res) {
   BackOffice.addTrainStop(req.body)
   .then(function (response) {
       utils.writeJson(res, response);
@@ -32,7 +31,7 @@ module.exports.addTrainStop = function(req, res) {
   });
 };
   
-module.exports.getTrainStop = function(req, res) {
+exports.getTrainStop = function getTrainStop (req, res) {
   BackOffice.getTrainStop(req.params.id)
     .then(function (response) {
       utils.writeJson(res, response);
@@ -42,7 +41,7 @@ module.exports.getTrainStop = function(req, res) {
     });
 };
   
-module.exports.searchTrainStops = function(req, res) {
+exports.searchTrainStops = function searchTrainStops (req, res) {
   BackOffice.searchTrainStops(req.params.id)
     .then(function (response) {
       utils.writeJson(res, response);

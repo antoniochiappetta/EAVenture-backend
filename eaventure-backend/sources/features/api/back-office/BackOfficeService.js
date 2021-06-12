@@ -5,7 +5,7 @@
  * body InterestItem Interest item to add (optional)
  * no response value expected for this operation
  **/
- exports.addInterestItem = function(body) {
+ exports.addInterestItem = function addInterestItem (body) {
     return new Promise(function(resolve, reject) {
       resolve();
     });
@@ -19,7 +19,7 @@
    * body SocialContent Social content item to add (optional)
    * no response value expected for this operation
    **/
-  exports.addSocialContent = function(body) {
+  exports.addSocialContent = function addSocialContent (body) {
     return new Promise(function(resolve, reject) {
       resolve();
     });
@@ -33,7 +33,7 @@
    * body TrainStop Train stop item to add (optional)
    * no response value expected for this operation
    **/
-  exports.addTrainStop = function(body) {
+  exports.addTrainStop = function addTrainStop (body) {
     return new Promise(function(resolve, reject) {
       resolve();
     });
@@ -47,7 +47,7 @@
    * id Long train stop id
    * returns TrainStop
    **/
-  exports.getTrainStop = function(id) {
+  exports.getTrainStop = function getTrainStop (id) {
     return new Promise(function(resolve, reject) {
       var examples = {};
       examples['application/json'] = {
@@ -72,7 +72,7 @@
    * city String city (optional)
    * returns List
    **/
-  exports.searchTrainStops = function(city) {
+  exports.searchTrainStops = function searchTrainStops (city) {
     return new Promise(function(resolve, reject) {
       var examples = {};
       examples['application/json'] = [ {

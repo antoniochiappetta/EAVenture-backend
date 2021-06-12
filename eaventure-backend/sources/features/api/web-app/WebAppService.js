@@ -5,7 +5,7 @@
  * trainId String train identifier from qr code
  * returns TrainContent
  **/
-exports.searchInventory = function(trainId) {
+exports.searchInventory = function searchInventory (trainId) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
