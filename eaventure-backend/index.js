@@ -2,6 +2,7 @@ const { Keystone } = require('@keystonejs/keystone');
 const { GraphQLApp } = require('@keystonejs/app-graphql');
 const { AdminUIApp } = require('@keystonejs/app-admin-ui');
 const initialiseData = require('./sources/test-data/initial-data');
+var cors = require('cors');
 
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 const PROJECT_NAME = 'eaventure-backend';
@@ -43,6 +44,7 @@ module.exports = {
     }),
   ],
   configureExpress: app => {
+    app.use(cors());
     app.use('/api', ApiRouter);
   }
 };
