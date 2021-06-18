@@ -1,4 +1,4 @@
-const { Relationship, Text, Integer, DateTime, Url } = require('@keystonejs/fields');
+const { Relationship, Text, Integer, DateTime } = require('@keystonejs/fields');
 
 module.exports = {
   fields: {
@@ -33,9 +33,9 @@ module.exports = {
       adminDoc: 'Rating of the item (from 1 to 5)',	   
       isRequired: false	    
     },
-    images: {
+    media: {
       type: Relationship,
-      ref: 'InterestItemImage',
+      ref: 'InterestItemResource',
       many: true,
       isRequired: false	   
     },	 

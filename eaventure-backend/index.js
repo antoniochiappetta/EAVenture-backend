@@ -14,8 +14,9 @@ const adapterConfig = { mongoUri: dbUri };
 
 const UserSchema = require('./sources/schemas/User');
 const TrainStop = require('./sources/schemas/TrainStop');
+const TrainRideStop = require('./sources/schemas/TrainRideStop');
 const InterestItem = require('./sources/schemas/InterestItem');
-const InterestItemImage = require('./sources/schemas/InterestItemImage');
+const InterestItemResource = require('./sources/schemas/InterestItemResource');
 const SocialContent = require('./sources/schemas/SocialContent');
 const BackOfficeAuthStrategy = require('./sources/authentication/BackOfficeAuthStrategy');
 const ApiRouter = require('./sources/features/api/router');
@@ -27,8 +28,9 @@ const keystone = new Keystone({
 
 keystone.createList('User', UserSchema);
 keystone.createList('TrainStop', TrainStop);
+keystone.createList('TrainRideStop', TrainRideStop);
 keystone.createList('InterestItem', InterestItem);
-keystone.createList('InterestItemImage', InterestItemImage);
+keystone.createList('InterestItemResource', InterestItemResource);
 keystone.createList('SocialContent', SocialContent);
 
 const authStrategy = keystone.createAuthStrategy(BackOfficeAuthStrategy);
