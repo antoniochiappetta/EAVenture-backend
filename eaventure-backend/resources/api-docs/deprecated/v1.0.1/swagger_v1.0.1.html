@@ -717,7 +717,7 @@
       "type" : "integer",
       "example" : 1
     },
-    "media" : {
+    "images" : {
       "type" : "array",
       "items" : {
         "type" : "string",
@@ -736,7 +736,8 @@
       "example" : "YouTube"
     },
     "stop" : {
-      "$ref" : "#/components/schemas/TrainStop"
+      "type" : "string",
+      "example" : "Pompei Scavi"
     },
     "url" : {
       "type" : "string",
@@ -756,14 +757,14 @@
     "allStops" : {
       "type" : "array",
       "items" : {
-        "$ref" : "#/components/schemas/TrainRideStop"
+        "$ref" : "#/components/schemas/TrainStop"
       }
     },
     "currentStop" : {
-      "$ref" : "#/components/schemas/TrainRideStop"
+      "$ref" : "#/components/schemas/TrainStop"
     },
     "nextStop" : {
-      "$ref" : "#/components/schemas/TrainRideStop"
+      "$ref" : "#/components/schemas/TrainStop"
     },
     "interestItems" : {
       "type" : "array",
@@ -798,37 +799,10 @@
     }
   }
 };
-            defs["TrainRideStop"] = {
-  "required" : [ "sequence", "trainStop" ],
-  "type" : "object",
-  "properties" : {
-    "trainStop" : {
-      "$ref" : "#/components/schemas/TrainStop"
-    },
-    "sequence" : {
-      "type" : "integer",
-      "example" : 1
-    },
-    "arrivalTime" : {
-      "type" : "string",
-      "format" : "date-time",
-      "example" : "2016-08-29T09:12:33.001Z"
-    },
-    "departureTime" : {
-      "type" : "string",
-      "format" : "date-time",
-      "example" : "2016-08-29T09:12:33.001Z"
-    }
-  }
-};
             defs["TrainStop"] = {
-  "required" : [ "city", "latitude", "longitude", "name", "stationId" ],
+  "required" : [ "address", "city", "name", "time" ],
   "type" : "object",
   "properties" : {
-    "stationId" : {
-      "type" : "integer",
-      "example" : 801
-    },
     "name" : {
       "type" : "string",
       "example" : "Pompei Scavi"
@@ -837,13 +811,14 @@
       "type" : "string",
       "example" : "Pompei"
     },
-    "latitude" : {
-      "type" : "number",
-      "example" : 40.849223
+    "address" : {
+      "type" : "string",
+      "example" : "via Carlo Magno 30"
     },
-    "longitude" : {
-      "type" : "number",
-      "example" : 14.269264
+    "time" : {
+      "type" : "string",
+      "format" : "date-time",
+      "example" : "2016-08-29T09:12:33.001Z"
     }
   }
 };
@@ -896,7 +871,7 @@
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 1.1.0</div>
+              <div class="app-desc">Version: 1.0.1</div>
             <hr>
             <div>REST API for EAVenture backend</div>
           </div>
@@ -939,7 +914,7 @@
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "X-API-KEY: [[apiKey]]"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/antoniochiappetta/eaventure-backend/1.1.0/interest_item"</code></pre>
+"https://localhost:3000/api/v1/interest_item"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-BackOffice-addInterestItem-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -1257,7 +1232,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "X-API-KEY: [[apiKey]]"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/antoniochiappetta/eaventure-backend/1.1.0/social_content"</code></pre>
+"https://localhost:3000/api/v1/social_content"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-BackOffice-addSocialContent-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -1575,7 +1550,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "X-API-KEY: [[apiKey]]"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/antoniochiappetta/eaventure-backend/1.1.0/train_stop"</code></pre>
+"https://localhost:3000/api/v1/train_stop"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-BackOffice-addTrainStop-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -1893,7 +1868,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "X-API-KEY: [[apiKey]]"\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/antoniochiappetta/eaventure-backend/1.1.0/train_stop/{id}"</code></pre>
+"https://localhost:3000/api/v1/train_stop/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-BackOffice-getTrainStop-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -2241,7 +2216,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "X-API-KEY: [[apiKey]]"\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/antoniochiappetta/eaventure-backend/1.1.0/train_stop?city="</code></pre>
+"https://localhost:3000/api/v1/train_stop?city="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-BackOffice-searchTrainStops-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -2590,7 +2565,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "X-API-KEY: [[apiKey]]"\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/antoniochiappetta/eaventure-backend/1.1.0/inventory?trainId="</code></pre>
+"https://localhost:3000/api/v1/inventory?trainId="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-WebApp-searchInventory-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
