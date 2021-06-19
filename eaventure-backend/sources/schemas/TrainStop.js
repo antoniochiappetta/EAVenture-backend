@@ -1,7 +1,12 @@
-const { Text, DateTime } = require('@keystonejs/fields');
+const { Text, Integer, Float, DateTime } = require('@keystonejs/fields');
 
 module.exports = {
   fields: {
+    stationId: {
+      type: Integer,
+      isUnique: true,	    
+      isRequired: true
+    },
     name: {
       type: Text,
       isUnique: true,	    
@@ -11,14 +16,13 @@ module.exports = {
       type: Text,
       isRequired: true
     },
-    address: {
-      type: Text,
+    latitude: {
+      type: Float,
       isRequired: true
     },
-    time: {
-      type: DateTime,
-      format: 'dd/MM/yyyy HH:mm O',
+    longitude: {
+      type: Float,
       isRequired: true
-    },
+    }
   },
 };

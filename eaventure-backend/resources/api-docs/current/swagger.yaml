@@ -1,13 +1,13 @@
 ---
 openapi: 3.0.0
 info:
-  title: EAVenture backend
+  title: eaventure backend
   description: REST API for EAVenture backend
-  version: 1.0.0
+  version: 1.1.0
 servers:
-- url: https://virtserver.swaggerhub.com/antoniochiappetta/eaventure-backend/1.0.0
+- url: https://virtserver.swaggerhub.com/antoniochiappetta/eaventure-backend/1.1.0
   description: SwaggerHub API Auto Mocking
-- url: https://localhost:3000/api/v1
+- url: https://localhost:3000/api
   description: EAVenture REST API v1
 tags:
 - name: web app
@@ -20,8 +20,7 @@ paths:
       tags:
       - web app
       summary: Searches inventory for social contents and interest items by train line
-      description: |
-        Searches inventory for social contents and interest items by train line
+      description: Searches inventory for social contents and interest items by train line
       operationId: searchInventory
       parameters:
       - name: trainId
@@ -41,6 +40,28 @@ paths:
                 $ref: '#/components/schemas/TrainContent'
         "400":
           description: bad input parameter for train id
+      security:
+      - ApiKeyAuth: []
+  /interest_item:
+    post:
+      tags:
+      - back office
+      summary: Adds an interest item with an embedding url
+      description: Adds an interest item with an embedding url
+      operationId: addInterestItem
+      requestBody:
+        description: Interest item to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterestItem'
+      responses:
+        "201":
+          description: item created
+        "400":
+          description: invalid input, object invalid
+        "409":
+          description: an existing item already exists
       security:
       - ApiKeyAuth: []
   /social_content:
@@ -63,19 +84,50 @@ paths:
           description: invalid input, object invalid
         "409":
           description: an existing item already exists
-  /interest_item:
+      security:
+      - ApiKeyAuth: []
+  /train_stop:
+    get:
+      tags:
+      - back office
+      summary: Searches list of train stops
+      description: |
+        Searches list of train stops
+      operationId: searchTrainStops
+      parameters:
+      - name: city
+        in: query
+        description: city
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: list of train stops
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrainStop'
+        "400":
+          description: bad input parameter for train id
+      security:
+      - ApiKeyAuth: []
     post:
       tags:
       - back office
-      summary: Adds an interest item with an embedding url
-      description: Adds an interest item with an embedding url
-      operationId: addInterestItem
+      summary: Adds an train stop
+      description: Adds an train stop
+      operationId: addTrainStop
       requestBody:
-        description: Interest item to add
+        description: Train stop item to add
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InterestItem'
+              $ref: '#/components/schemas/TrainStop'
       responses:
         "201":
           description: item created
@@ -83,25 +135,38 @@ paths:
           description: invalid input, object invalid
         "409":
           description: an existing item already exists
+      security:
+      - ApiKeyAuth: []
+  /train_stop/{id}:
+    get:
+      tags:
+      - back office
+      summary: Get a train stop by id
+      description: Get a train stop by id
+      operationId: getTrainStop
+      parameters:
+      - name: id
+        in: path
+        description: train stop id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: a train stop
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainStop'
+        "400":
+          description: bad input parameter for train id
+      security:
+      - ApiKeyAuth: []
 components:
   schemas:
-    SocialContent:
-      required:
-      - platform
-      - stop
-      - url
-      type: object
-      properties:
-        platform:
-          type: string
-          example: YouTube
-        stop:
-          type: string
-          example: Pompei Scavi
-        url:
-          type: string
-          format: url
-          example: http://www.youtube.com/content-id
     InterestItem:
       required:
       - description
@@ -127,54 +192,49 @@ components:
         rating:
           type: integer
           example: 1
-        images:
+        media:
           type: array
           items:
             type: string
             format: url
             example: http://www.s3bucket.com/photo-id
-    TrainStop:
+    SocialContent:
       required:
-      - address
-      - city
-      - name
-      - time
+      - platform
+      - stop
+      - url
       type: object
       properties:
-        name:
+        platform:
           type: string
-          example: Pompei Scavi
-        city:
+          example: YouTube
+        stop:
+          $ref: '#/components/schemas/TrainStop'
+        url:
           type: string
-          example: Pompei
-        address:
-          type: string
-          example: via Carlo Magno 30
-        time:
-          type: string
-          format: date-time
-          example: 2016-08-29T09:12:33.001Z
+          format: url
+          example: http://www.youtube.com/content-id
     TrainContent:
       required:
-      - finalStop
+      - allStops
+      - currentStop
       - interestItems
-      - intermediateStops
+      - nextStop
       - socialContents
-      - startingStop
       - trainNumber
       type: object
       properties:
         trainNumber:
           type: string
           example: AD4453
-        startingStop:
-          $ref: '#/components/schemas/TrainStop'
-        finalStop:
-          $ref: '#/components/schemas/TrainStop'
-        intermediateStops:
+        allStops:
           type: array
           items:
-            $ref: '#/components/schemas/TrainStop'
+            $ref: '#/components/schemas/TrainRideStop'
+        currentStop:
+          $ref: '#/components/schemas/TrainRideStop'
+        nextStop:
+          $ref: '#/components/schemas/TrainRideStop'
         interestItems:
           type: array
           items:
@@ -183,6 +243,65 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SocialContent'
+        delay:
+          $ref: '#/components/schemas/TrainDelay'
+    TrainDelay:
+      required:
+      - amount
+      - reason
+      type: object
+      properties:
+        amount:
+          type: integer
+          description: Accumulated delay in seconds
+          format: int64
+          example: 85
+        reason:
+          type: string
+          example: Road closure in via Giacomo Gatti
+    TrainRideStop:
+      required:
+      - sequence
+      - trainStop
+      type: object
+      properties:
+        trainStop:
+          $ref: '#/components/schemas/TrainStop'
+        sequence:
+          type: integer
+          example: 1
+        arrivalTime:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        departureTime:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+    TrainStop:
+      required:
+      - city
+      - latitude
+      - longitude
+      - name
+      - stationId
+      type: object
+      properties:
+        stationId:
+          type: integer
+          example: 801
+        name:
+          type: string
+          example: Pompei Scavi
+        city:
+          type: string
+          example: Pompei
+        latitude:
+          type: number
+          example: 40.849223
+        longitude:
+          type: number
+          example: 14.269264
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

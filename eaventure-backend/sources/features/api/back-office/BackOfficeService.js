@@ -51,10 +51,11 @@
     return new Promise(function(resolve, reject) {
       var examples = {};
       examples['application/json'] = {
-    "address" : "via Carlo Magno 30",
     "city" : "Pompei",
+    "latitude" : 40.849223,
     "name" : "Pompei Scavi",
-    "time" : "2016-08-29T09:12:33.001Z"
+    "stationId" : 801,
+    "longitude" : 14.269264
   };
       if (Object.keys(examples).length > 0) {
         resolve(examples[Object.keys(examples)[0]]);
@@ -76,15 +77,17 @@
     return new Promise(function(resolve, reject) {
       var examples = {};
       examples['application/json'] = [ {
-    "address" : "via Carlo Magno 30",
     "city" : "Pompei",
+    "latitude" : 40.849223,
     "name" : "Pompei Scavi",
-    "time" : "2016-08-29T09:12:33.001Z"
+    "stationId" : 801,
+    "longitude" : 14.269264
   }, {
-    "address" : "via Carlo Magno 30",
     "city" : "Pompei",
+    "latitude" : 40.849223,
     "name" : "Pompei Scavi",
-    "time" : "2016-08-29T09:12:33.001Z"
+    "stationId" : 801,
+    "longitude" : 14.269264
   } ];
       if (Object.keys(examples).length > 0) {
         resolve(examples[Object.keys(examples)[0]]);

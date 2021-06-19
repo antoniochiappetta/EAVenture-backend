@@ -1,0 +1,190 @@
+---
+openapi: 3.0.0
+info:
+  title: EAVenture backend
+  description: REST API for EAVenture backend
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/antoniochiappetta/eaventure-backend/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://localhost:3000/api/v1
+  description: EAVenture REST API v1
+tags:
+- name: web app
+  description: Web application displaying train line content by stop
+- name: back office
+  description: EAV CMS admin panel
+paths:
+  /inventory:
+    get:
+      tags:
+      - web app
+      summary: Searches inventory for social contents and interest items by train line
+      description: |
+        Searches inventory for social contents and interest items by train line
+      operationId: searchInventory
+      parameters:
+      - name: trainId
+        in: query
+        description: train identifier from qr code
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: search results for train
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainContent'
+        "400":
+          description: bad input parameter for train id
+      security:
+      - ApiKeyAuth: []
+  /social_content:
+    post:
+      tags:
+      - back office
+      summary: Adds an social content with an embedding url
+      description: Adds a social content with an embedding url
+      operationId: addSocialContent
+      requestBody:
+        description: Social content item to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SocialContent'
+      responses:
+        "201":
+          description: item created
+        "400":
+          description: invalid input, object invalid
+        "409":
+          description: an existing item already exists
+  /interest_item:
+    post:
+      tags:
+      - back office
+      summary: Adds an interest item with an embedding url
+      description: Adds an interest item with an embedding url
+      operationId: addInterestItem
+      requestBody:
+        description: Interest item to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterestItem'
+      responses:
+        "201":
+          description: item created
+        "400":
+          description: invalid input, object invalid
+        "409":
+          description: an existing item already exists
+components:
+  schemas:
+    SocialContent:
+      required:
+      - platform
+      - stop
+      - url
+      type: object
+      properties:
+        platform:
+          type: string
+          example: YouTube
+        stop:
+          type: string
+          example: Pompei Scavi
+        url:
+          type: string
+          format: url
+          example: http://www.youtube.com/content-id
+    InterestItem:
+      required:
+      - description
+      - name
+      - stop
+      type: object
+      properties:
+        name:
+          type: string
+          example: Sconto Pizzeria X
+        description:
+          type: string
+          example: Sconto del 30%
+        stop:
+          $ref: '#/components/schemas/TrainStop'
+        priceLevel:
+          type: string
+          example: $$$$
+        eventDate:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        rating:
+          type: integer
+          example: 1
+        images:
+          type: array
+          items:
+            type: string
+            format: url
+            example: http://www.s3bucket.com/photo-id
+    TrainStop:
+      required:
+      - address
+      - city
+      - name
+      - time
+      type: object
+      properties:
+        name:
+          type: string
+          example: Pompei Scavi
+        city:
+          type: string
+          example: Pompei
+        address:
+          type: string
+          example: via Carlo Magno 30
+        time:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+    TrainContent:
+      required:
+      - finalStop
+      - interestItems
+      - intermediateStops
+      - socialContents
+      - startingStop
+      - trainNumber
+      type: object
+      properties:
+        trainNumber:
+          type: string
+          example: AD4453
+        startingStop:
+          $ref: '#/components/schemas/TrainStop'
+        finalStop:
+          $ref: '#/components/schemas/TrainStop'
+        intermediateStops:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainStop'
+        interestItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestItem'
+        socialContents:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialContent'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: X-API-KEY
+      in: header

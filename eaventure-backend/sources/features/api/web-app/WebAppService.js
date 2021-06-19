@@ -10,17 +10,17 @@ exports.searchInventory = function searchInventory (trainId) {
     var examples = {};
     examples['application/json'] = {
   "interestItems" : [ {
-    "images" : [ "http://www.s3bucket.com/photo-id", "http://www.s3bucket.com/photo-id" ],
     "name" : "Sconto Pizzeria X",
     "rating" : 1,
     "description" : "Sconto del 30%",
+    "media" : [ "http://www.s3bucket.com/photo-id", "http://www.s3bucket.com/photo-id" ],
     "priceLevel" : "$$$$",
     "eventDate" : "2016-08-29T09:12:33.001Z"
   }, {
-    "images" : [ "http://www.s3bucket.com/photo-id", "http://www.s3bucket.com/photo-id" ],
     "name" : "Sconto Pizzeria X",
     "rating" : 1,
     "description" : "Sconto del 30%",
+    "media" : [ "http://www.s3bucket.com/photo-id", "http://www.s3bucket.com/photo-id" ],
     "priceLevel" : "$$$$",
     "eventDate" : "2016-08-29T09:12:33.001Z"
   } ],
@@ -29,22 +29,32 @@ exports.searchInventory = function searchInventory (trainId) {
     "amount" : 85
   },
   "allStops" : [ {
-    "address" : "via Carlo Magno 30",
-    "city" : "Pompei",
-    "name" : "Pompei Scavi",
-    "time" : "2016-08-29T09:12:33.001Z"
+    "departureTime" : "2016-08-29T09:12:33.001Z",
+    "sequence" : 1,
+    "arrivalTime" : "2016-08-29T09:12:33.001Z",
+    "trainStop" : {
+      "city" : "Pompei",
+      "latitude" : 40.849223,
+      "name" : "Pompei Scavi",
+      "stationId" : 801,
+      "longitude" : 14.269264
+    }
   }, {
-    "address" : "via Carlo Magno 30",
-    "city" : "Pompei",
-    "name" : "Pompei Scavi",
-    "time" : "2016-08-29T09:12:33.001Z"
+    "departureTime" : "2016-08-29T09:12:33.001Z",
+    "sequence" : 1,
+    "arrivalTime" : "2016-08-29T09:12:33.001Z",
+    "trainStop" : {
+      "city" : "Pompei",
+      "latitude" : 40.849223,
+      "name" : "Pompei Scavi",
+      "stationId" : 801,
+      "longitude" : 14.269264
+    }
   } ],
   "socialContents" : [ {
-    "stop" : "Pompei Scavi",
     "platform" : "YouTube",
     "url" : "http://www.youtube.com/content-id"
   }, {
-    "stop" : "Pompei Scavi",
     "platform" : "YouTube",
     "url" : "http://www.youtube.com/content-id"
   } ],
